@@ -1,4 +1,5 @@
 import 'package:cart_management/cart_provider.dart';
+import 'package:cart_management/cart_screen.dart';
 import 'package:cart_management/db_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
@@ -54,16 +55,22 @@ class _ProductListScreenState extends State<ProductListScreen> {
           title: const Text('Product List'),
           centerTitle: true,
           actions: [
-            Center(
-              child: Badge(
-                badgeContent: Consumer<CartProvider>(
-                  builder: (context, value, child) {
-                    return Text(value.getCounter().toString(),
-                        style: const TextStyle(color: Colors.white));
-                  },
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => const CartScreen()));
+              },
+              child: Center(
+                child: Badge(
+                  badgeContent: Consumer<CartProvider>(
+                    builder: (context, value, child) {
+                      return Text(value.getCounter().toString(),
+                          style: const TextStyle(color: Colors.white));
+                    },
+                  ),
+                  animationDuration: const Duration(milliseconds: 300),
+                  child: const Icon(Icons.shopping_bag_outlined),
                 ),
-                animationDuration: const Duration(milliseconds: 300),
-                child: const Icon(Icons.shopping_bag_outlined),
               ),
             ),
             const SizedBox(
@@ -91,8 +98,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                 Image(
                                   height: 100,
                                   width: 100,
-                                  image: NetworkImage(
-                                      productImage[index].toString()),
+                                  image: NetworkImage(productImage[index].toString()),
                                 ),
                                 const SizedBox(
                                   width: 15,
@@ -100,13 +106,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                 Expanded(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(productName[index].toString(),
                                           style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500)),
+                                              fontSize: 16, fontWeight: FontWeight.w500)),
                                       const SizedBox(
                                         height: 5,
                                       ),
@@ -116,8 +120,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                               r"$" +
                                               productPrice[index].toString(),
                                           style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500)),
+                                              fontSize: 16, fontWeight: FontWeight.w500)),
                                       const SizedBox(
                                         height: 5,
                                       ),
@@ -129,23 +132,16 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                 .insert(Cart(
                                                     id: index,
                                                     productId: index.toString(),
-                                                    productName:
-                                                        productName[index]
-                                                            .toString(),
-                                                    initialPrice:
-                                                        productPrice[index],
-                                                    productPrice:
-                                                        productPrice[index],
+                                                    productName: productName[index].toString(),
+                                                    initialPrice: productPrice[index],
+                                                    productPrice: productPrice[index],
                                                     quantity: 1,
-                                                    unitTag: productUnit[index]
-                                                        .toString(),
-                                                    image: productImage[index]
-                                                        .toString()))
+                                                    unitTag: productUnit[index].toString(),
+                                                    image: productImage[index].toString()))
                                                 .then((value) {
                                               print('Product is added to cart');
-                                              cart.addTotalPrice(double.parse(
-                                                  productPrice[index]
-                                                      .toString()));
+                                              cart.addTotalPrice(
+                                                  double.parse(productPrice[index].toString()));
                                               cart.addCounter();
                                             }).onError((error, stackTrace) {
                                               print(error.toString());
@@ -155,14 +151,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                               height: 35,
                                               width: 100,
                                               decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
+                                                  borderRadius: BorderRadius.circular(5),
                                                   color: Colors.green),
                                               child: const Center(
                                                   child: Text(
                                                 'Add to cart',
-                                                style: TextStyle(
-                                                    color: Colors.white),
+                                                style: TextStyle(color: Colors.white),
                                               ))),
                                         ),
                                       )
@@ -173,7 +167,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             )
                           ]),
                     ));
-                  }))
+                  })),
         ]));
   }
 }

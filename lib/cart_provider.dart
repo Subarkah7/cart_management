@@ -1,3 +1,5 @@
+import 'package:cart_management/cart_model.dart';
+import 'package:cart_management/db_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -5,8 +7,18 @@ class CartProvider with ChangeNotifier {
   int _counter = 0;
   int get counter => _counter;
 
+  DBHelper db = DBHelper();
+
   double _totalPrice = 0.0;
   double get totalPrice => _totalPrice;
+
+  late Future<List<Cart>> _cart;
+  Future<List<Cart>> get cart => _cart;
+
+  Future<List<Cart>> getData() async {
+    _cart = db.getCartList();
+    return _cart;
+  }
 
   void _setPrefItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
